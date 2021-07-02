@@ -11,6 +11,16 @@ using Microsoft.Extensions.Configuration;
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using Npgsql;
+using ToDoAppDomainLayer.Decorators.Command;
+using ToDoAppDomainLayer.Decorators.Query;
+using ToDoAppDomainLayer.Interfaces;
+using ToDoAppDataAccessLayer.Commands;
+using ToDoAppDataAccessLayer.Queries;
+using ToDoAppDomainLayer.Parameters.Commands;
+using ToDoAppDomainLayer.Parameters.Queries;
+using ToDoAppDomainLayer.DataObjects;
+using ToDoAppDomainLayer.Interfaces.Facades;
+using ToDoAppDomainLayer.Facades;
 
 namespace ToDoAppAPI
 {
@@ -26,7 +36,49 @@ namespace ToDoAppAPI
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-
+            // register command implementations
+            builder.RegisterType<AddTaskCommand>()
+                .As(typeof(ICommand<AddTaskCommandParameter, int>));
+            builder.RegisterType<EditTaskCommand>()
+                .As(typeof(IQuery<EditTaskCommandParameter, int>));
+            builder.RegisterType<RemoveTaskCommand>()
+                .As(typeof(ICommand<RemoveTaskCommandParameter, int>));
+            builder.RegisterType<AddCategoryCommand>()
+                .As(typeof(ICommand<AddCategoryCommandParameter, int>));
+            builder.RegisterType<EditCategoryCommand>()
+                .As(typeof(ICommand<EditCategoryCommandParameter, int>));
+            builder.RegisterType<RemoveCategoryCommand>()
+                .As(typeof(ICommand<RemoveCategoryCommandParameter, int>));
+            // register query implementations
+            builder.RegisterType<GetActiveTasksByCategoryIdQuery>()
+                .As(typeof(IQuery<GetActiveTasksByCategoryIdQueryParameter, IEnumerable<ToDoTaskOutputModel>>));
+            builder.RegisterType<GetActiveTasksQuery>()
+                .As(typeof(IQuery<GetActiveTasksQueryParameter, IEnumerable<ToDoTaskOutputModel>>));
+            builder.RegisterType<GetCategoriesQuery>()
+                .As(typeof(IQuery<GetCategoriesQueryParameter, IEnumerable<Category>>));
+            builder.RegisterType<GetCompleteTasksByCategoryIdQuery>()
+                .As(typeof(IQuery<GetCompleteTasksByCategoryIdQueryParameter, IEnumerable<ToDoTaskOutputModel>>));
+            builder.RegisterType<GetCompleteTasksQuery>()
+                .As(typeof(IQuery<GetCompleteTasksQueryParameter, IEnumerable<ToDoTaskOutputModel>>));
+            builder.RegisterType<GetTasksByCategoryIdQuery>()
+                .As(typeof(IQuery<GetTasksByCategoryIdQueryParameter, IEnumerable<ToDoTaskOutputModel>>));
+            // register command decorators
+            builder.RegisterGenericDecorator(typeof(RetryCommandDecorator<,>),
+                typeof(ICommand<,>));
+            builder.RegisterGenericDecorator(typeof(LoggingCommandDecorator<,>),
+                typeof(ICommand<,>));
+            builder.RegisterGenericDecorator(typeof(ErrorHandlingCommandDecorator<,>),
+                typeof(ICommand<,>));
+            // register query decorators
+            builder.RegisterGenericDecorator(typeof(RetryQueryDecorator<,>),
+                typeof(IQuery<,>));
+            builder.RegisterGenericDecorator(typeof(LoggingQueryDecorator<,>),
+                typeof(IQuery<,>));
+            builder.RegisterGenericDecorator(typeof(ErrorHandlingQueryDecorator<,>),
+                typeof(IQuery<,>));
+            // register facades
+            builder.RegisterType<TaskFacade>().As<ITaskFacade>();
+            builder.RegisterType<CategoryFacade>().As<ICategoryFacade>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
