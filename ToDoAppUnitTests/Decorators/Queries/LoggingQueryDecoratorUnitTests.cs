@@ -10,7 +10,7 @@ using ToDoAppDomainLayer.Decorators.Query;
 using Microsoft.Extensions.Logging;
 
 
-namespace TodoAppUnitTests
+namespace TodoAppUnitTests.Decorators.Queries
 {
     public class LoggingQueryDecoratorUnitTests
     {

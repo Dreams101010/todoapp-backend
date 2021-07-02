@@ -6,25 +6,25 @@ using System.Threading.Tasks;
 using Xunit;
 using Moq;
 using ToDoAppDomainLayer.Interfaces;
-using ToDoAppDomainLayer.Decorators.Command;
+using ToDoAppDomainLayer.Decorators.Query;
 
-namespace TodoAppUnitTests
+namespace TodoAppUnitTests.Decorators.Queries
 {
-    public class RetryCommandDecoratorUnitTests
+    public class RetryQueryDecoratorUnitTests
     {
         [Fact]
         public void Test_ReturnsCorrectValueAfterFewErrors()
         {
             // Arrange
             int expected = 5;
-            var queryMock = new Mock<ICommand<int, int>>();
+            var queryMock = new Mock<IQuery<int, int>>();
             queryMock.SetupSequence(x => x.Execute(It.IsAny<int>()))
                 .Throws(new ArgumentException())
                 .Throws(new ArgumentException())
                 .Throws(new ArgumentException())
                 .Returns(expected);
 
-            var sut = new RetryCommandDecorator<int, int>(queryMock.Object);
+            var sut = new RetryQueryDecorator<int, int>(queryMock.Object);
 
             // Act
             var actual = sut.Execute(0);
@@ -38,7 +38,7 @@ namespace TodoAppUnitTests
         public void Test_ThrowsAfterRetriesOnErrors()
         {
             // Arrange
-            var queryMock = new Mock<ICommand<int, int>>();
+            var queryMock = new Mock<IQuery<int, int>>();
             queryMock.SetupSequence(x => x.Execute(It.IsAny<int>()))
                 .Throws(new ArgumentException())
                 .Throws(new ArgumentException())
@@ -47,7 +47,7 @@ namespace TodoAppUnitTests
                 .Throws(new ArgumentException())
                 .Throws(new ArgumentException());
 
-            var sut = new RetryCommandDecorator<int, int>(queryMock.Object);
+            var sut = new RetryQueryDecorator<int, int>(queryMock.Object);
 
             // Act
             Assert.Throws<ArgumentException>(() => sut.Execute(0));
@@ -59,11 +59,11 @@ namespace TodoAppUnitTests
         {
             // Arrange
             int expected = 5;
-            var queryMock = new Mock<ICommand<int, int>>();
+            var queryMock = new Mock<IQuery<int, int>>();
             queryMock.SetupSequence(x => x.Execute(It.IsAny<int>()))
                 .Returns(expected);
 
-            var sut = new RetryCommandDecorator<int, int>(queryMock.Object);
+            var sut = new RetryQueryDecorator<int, int>(queryMock.Object);
 
             // Act
             var actual = sut.Execute(0);

@@ -5,7 +5,7 @@ using ToDoAppDomainLayer.Interfaces;
 using ToDoAppDomainLayer.Decorators.Command;
 using Microsoft.Extensions.Logging;
 
-namespace TodoAppUnitTests
+namespace TodoAppUnitTests.Decorators.Commands
 {
     public class ErrorHandlingCommandDecoratorUnitTests
     {
