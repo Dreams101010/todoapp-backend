@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
+using Npgsql;
 
 namespace ToDoAppAPI
 {
@@ -32,6 +33,8 @@ namespace ToDoAppAPI
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient(
+                (x) => new NpgsqlConnection(Configuration.GetConnectionString("PostgresDB")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
