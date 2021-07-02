@@ -40,7 +40,7 @@ namespace ToDoAppAPI
             builder.RegisterType<AddTaskCommand>()
                 .As(typeof(ICommand<AddTaskCommandParameter, int>));
             builder.RegisterType<EditTaskCommand>()
-                .As(typeof(IQuery<EditTaskCommandParameter, int>));
+                .As(typeof(ICommand<EditTaskCommandParameter, int>));
             builder.RegisterType<RemoveTaskCommand>()
                 .As(typeof(ICommand<RemoveTaskCommandParameter, int>));
             builder.RegisterType<AddCategoryCommand>()
@@ -87,24 +87,27 @@ namespace ToDoAppAPI
         {
             services.AddTransient(
                 (x) => new NpgsqlConnection(Configuration.GetConnectionString("PostgresDB")));
+            services.AddControllers();
+            services.AddSwaggerGen();
+            //services.AddHttpsRedirection((opts) => opts.HttpsPort = 443);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            app.UseExceptionHandler("/error");
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
             {
-                app.UseDeveloperExceptionPage();
-            }
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }
