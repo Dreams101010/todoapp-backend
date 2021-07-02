@@ -26,8 +26,9 @@ namespace ToDoAppDataAccessLayer.Queries
 
         public IEnumerable<Category> Execute(GetCategoriesQueryParameter param)
         {
-            string selectQuery = "SELECT (id, title, color) FROM category";
-            return Connection.Query<Category>(selectQuery).ToList();
+            string selectQuery = "SELECT id, title, color FROM category";
+            var list = Connection.Query<Category>(selectQuery).ToList();
+            return list;
         }
     }
 }
