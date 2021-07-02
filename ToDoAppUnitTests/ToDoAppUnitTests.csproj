@@ -27,4 +27,10 @@
     <ProjectReference Include="..\ToDoAppDomainLayer\ToDoAppDomainLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestConnectionStrings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

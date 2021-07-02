@@ -1,0 +1,3 @@
+{
+  "PostgresTestConnectionString": "Host=localhost;Port=8081;Database=todoapp_testing;Username=postgres;Password=dev123"
+}
