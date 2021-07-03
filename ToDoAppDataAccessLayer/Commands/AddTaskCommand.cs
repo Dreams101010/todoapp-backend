@@ -7,6 +7,7 @@ using Npgsql;
 using Dapper;
 using ToDoAppDomainLayer.Interfaces;
 using ToDoAppDomainLayer.Parameters.Commands;
+using ToDoAppDomainLayer.Exceptions;
 
 namespace ToDoAppDataAccessLayer.Commands
 {
@@ -36,7 +37,7 @@ namespace ToDoAppDataAccessLayer.Commands
                 "iscomplete = @IsComplete AND " +
                 "categoryid = @CategoryId";
             var affected = Connection.Execute(insertQuery, param.TaskToAdd);
-            if (affected == 0) throw new Exception("Insert failed");
+            if (affected == 0) throw new DatabaseInteractionException("Insertion of task failed");
             int insertedId = (int)Connection.ExecuteScalar(selectQuery, param.TaskToAdd);
             return insertedId;
         }

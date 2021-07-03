@@ -7,6 +7,7 @@ using Npgsql;
 using Dapper;
 using ToDoAppDomainLayer.Interfaces;
 using ToDoAppDomainLayer.Parameters.Commands;
+using ToDoAppDomainLayer.Exceptions;
 
 namespace ToDoAppDataAccessLayer.Commands
 {
@@ -28,7 +29,7 @@ namespace ToDoAppDataAccessLayer.Commands
             string removeQuery = "DELETE FROM category WHERE id = @CategoryId";
 
             var affected = Connection.Execute(removeQuery, param);
-            if (affected == 0) throw new Exception("Remove failed");
+            if (affected == 0) throw new DatabaseEntryNotFoundException("Remove of category failed");
             int removedId = param.CategoryId;
             return removedId;
         }

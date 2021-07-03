@@ -7,6 +7,7 @@ using Npgsql;
 using Dapper;
 using ToDoAppDomainLayer.Interfaces;
 using ToDoAppDomainLayer.Parameters.Commands;
+using ToDoAppDomainLayer.Exceptions;
 
 namespace ToDoAppDataAccessLayer.Commands
 {
@@ -28,7 +29,7 @@ namespace ToDoAppDataAccessLayer.Commands
                 "WHERE id = @Id";
 
             var affected = Connection.Execute(updateQuery, param.Category);
-            if (affected == 0) throw new Exception("Update failed");
+            if (affected == 0) throw new DatabaseEntryNotFoundException("Update of category failed");
             int updatedId = param.Category.Id;
             return updatedId;
         }

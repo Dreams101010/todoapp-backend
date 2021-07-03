@@ -7,6 +7,7 @@ using Npgsql;
 using Dapper;
 using ToDoAppDomainLayer.Interfaces;
 using ToDoAppDomainLayer.Parameters.Commands;
+using ToDoAppDomainLayer.Exceptions;
 
 namespace ToDoAppDataAccessLayer.Commands
 {
@@ -28,7 +29,7 @@ namespace ToDoAppDataAccessLayer.Commands
             string selectQuery = "SELECT (id) FROM category WHERE title = @Title AND color = @Color";
 
             var affected = Connection.Execute(insertQuery, param.CategoryToAdd);
-            if (affected == 0) throw new Exception("Insert failed");
+            if (affected == 0) throw new DatabaseInteractionException("Insertion of category failed");
             int insertedId = (int)Connection.ExecuteScalar(selectQuery, param.CategoryToAdd);
             return insertedId;
         }

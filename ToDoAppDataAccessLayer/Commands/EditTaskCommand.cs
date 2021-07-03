@@ -8,6 +8,7 @@ using Dapper;
 using ToDoAppDomainLayer.Interfaces;
 using ToDoAppDomainLayer.Parameters.Commands;
 using ToDoAppDomainLayer.DataObjects;
+using ToDoAppDomainLayer.Exceptions;
 
 namespace ToDoAppDataAccessLayer.Commands
 {
@@ -28,7 +29,7 @@ namespace ToDoAppDataAccessLayer.Commands
                 "UPDATE todotask SET (title, description, createdat, isactive, iscomplete, categoryid) = " +
                 "(@Title, @Description, @CreatedAt, @IsActive, @IsComplete, @CategoryId) WHERE id = @Id";
             var affected = Connection.Execute(updateQuery, param.Task);
-            if (affected == 0) throw new Exception("Update failed");
+            if (affected == 0) throw new DatabaseEntryNotFoundException("Update of task failed");
             int updatedId = param.Task.Id;
             return updatedId;
         }

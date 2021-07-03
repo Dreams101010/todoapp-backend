@@ -7,6 +7,7 @@ using Npgsql;
 using Dapper;
 using ToDoAppDomainLayer.Interfaces;
 using ToDoAppDomainLayer.Parameters.Commands;
+using ToDoAppDomainLayer.Exceptions;
 
 
 namespace ToDoAppDataAccessLayer.Commands
@@ -29,7 +30,7 @@ namespace ToDoAppDataAccessLayer.Commands
             string removeQuery = "DELETE FROM todotask WHERE id = @TaskId";
 
             var affected = Connection.Execute(removeQuery, param);
-            if (affected == 0) throw new Exception("Remove failed");
+            if (affected == 0) throw new DatabaseEntryNotFoundException("Remove of task failed");
             int removedId = param.TaskId;
             return removedId;
         }
