@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Diagnostics;
+using Npgsql;
+using ToDoAppDomainLayer.Exceptions;
+using ToDoAppAPI.Models;
 
 namespace ToDoAppAPI.Controllers
 {
@@ -17,11 +20,41 @@ namespace ToDoAppAPI.Controllers
             System.Diagnostics.Debug.WriteLine("Exception handler called");
             var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
             var exception = context.Error; // Your exception
-            var code = 500; // Internal Server Error by default
-
-            Response.StatusCode = code; // You can use HttpStatusCode enum instead
-
-            return new StatusCodeResult(code);
+            switch (exception)
+            {
+                case NpgsqlException:
+                    {
+                        ErrorModel model = new()
+                        {
+                            Message = "A database error has occured",
+                        };
+                        return StatusCode(500, model);
+                    }
+                case DatabaseInteractionException:
+                    {
+                        ErrorModel model = new()
+                        {
+                            Message = "A database error has occured",
+                        };
+                        return StatusCode(500, model);
+                    }
+                case DatabaseEntryNotFoundException databaseException:
+                    {
+                        ErrorModel model = new()
+                        {
+                            Message = databaseException.Message,
+                        };
+                        return NotFound(model);
+                    }
+                default:
+                    {
+                        ErrorModel model = new()
+                        {
+                            Message = "A database error has occured",
+                        };
+                        return StatusCode(500, model);
+                    }
+            }
         }
     }
 }
