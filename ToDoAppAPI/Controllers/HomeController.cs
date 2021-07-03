@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToDoAppDomainLayer.DataObjects;
 using ToDoAppDomainLayer.Interfaces.Facades;
+using ToDoAppAPI.Models;
 
 namespace ToDoAppAPI.Controllers
 {
@@ -35,17 +36,17 @@ namespace ToDoAppAPI.Controllers
 
         [HttpPost]
         [Route("addCategory")]
-        public IActionResult AddCategory(Category categoryToAdd)
+        public IActionResult AddCategory(CategoryAddModel categoryToAdd)
         {
-            int insertedId = CategoryFacade.AddCategory(categoryToAdd);
+            int insertedId = CategoryFacade.AddCategory(categoryToAdd.ConvertToDomainModel());
             return Ok(new { Id = insertedId });
         }
 
         [HttpPost]
         [Route("editCategory")]
-        public IActionResult EditCategory(Category categoryToEdit)
+        public IActionResult EditCategory(CategoryEditModel categoryToEdit)
         {
-            CategoryFacade.EditCategory(categoryToEdit);
+            CategoryFacade.EditCategory(categoryToEdit.ConvertToDomainModel());
             return Ok();
         }
 
@@ -67,17 +68,17 @@ namespace ToDoAppAPI.Controllers
 
         [HttpPost]
         [Route("addTask")]
-        public IActionResult AddTask(ToDoTask taskToAdd)
+        public IActionResult AddTask(ToDoTaskAddModel taskToAdd)
         {
-            int insertedId = TaskFacade.AddTask(taskToAdd);
+            int insertedId = TaskFacade.AddTask(taskToAdd.ConvertToDomainModel());
             return Ok(new { Id = insertedId });
         }
 
         [HttpPost]
         [Route("editTask")]
-        public IActionResult EditTask(ToDoTask taskToEdit)
+        public IActionResult EditTask(ToDoTaskEditModel taskToEdit)
         {
-            TaskFacade.EditTask(taskToEdit);
+            TaskFacade.EditTask(taskToEdit.ConvertToDomainModel());
             return Ok();
         }
 
