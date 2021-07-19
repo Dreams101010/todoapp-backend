@@ -62,6 +62,8 @@ namespace ToDoAppAPI
                 .As(typeof(IQuery<GetCompleteTasksQueryParameter, IEnumerable<ToDoTaskOutputModel>>));
             builder.RegisterType<GetTasksByCategoryIdQuery>()
                 .As(typeof(IQuery<GetTasksByCategoryIdQueryParameter, IEnumerable<ToDoTaskOutputModel>>));
+            builder.RegisterType<GetCategoryByIdQuery>()
+                .As(typeof(IQuery<GetCategoryByIdQueryParameter, Category>));
             // register command decorators
             builder.RegisterGenericDecorator(typeof(RetryCommandDecorator<,>),
                 typeof(ICommand<,>));
@@ -89,13 +91,21 @@ namespace ToDoAppAPI
                 (x) => new NpgsqlConnection(Configuration.GetConnectionString("PostgresDB")));
             services.AddControllers();
             services.AddSwaggerGen();
-            //services.AddHttpsRedirection((opts) => opts.HttpsPort = 443);
+            services.AddHttpsRedirection((opts) => opts.HttpsPort = 443);
+            services.AddCors((arg) => arg.AddPolicy("AllowAnyOrigin", options =>
+            {
+                options.AllowAnyOrigin();
+                options.AllowAnyMethod();
+                options.AllowAnyHeader();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseExceptionHandler("/error");
+
+            app.UseCors("AllowAnyOrigin");
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
