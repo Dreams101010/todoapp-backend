@@ -21,32 +21,20 @@ namespace ToDoAppDomainLayer.Facades
             RemoveCategoryCommand = null;
         private readonly IQuery<GetCategoriesQueryParameter, IEnumerable<Category>> 
             GetCategoriesQuery = null;
+        private readonly IQuery<GetCategoryByIdQueryParameter, Category>
+            GetCategoryByIdQuery = null;
         public CategoryFacade(
             ICommand<AddCategoryCommandParameter, int> addCommand,
             ICommand<EditCategoryCommandParameter, int> editCommand,
             ICommand<RemoveCategoryCommandParameter, int> removeCommand,
-            IQuery<GetCategoriesQueryParameter, IEnumerable<Category>> getCategoriesQuery)
+            IQuery<GetCategoriesQueryParameter, IEnumerable<Category>> getCategoriesQuery,
+            IQuery<GetCategoryByIdQueryParameter, Category> getCategoryByIdQuery)
         {
-            if (addCommand is null)
-            {
-                throw new ArgumentNullException(nameof(addCommand));
-            }
-            if (editCommand is null)
-            {
-                throw new ArgumentNullException(nameof(editCommand));
-            }
-            if (removeCommand is null)
-            {
-                throw new ArgumentNullException(nameof(removeCommand));
-            }
-            if (getCategoriesQuery is null)
-            {
-                throw new ArgumentNullException(nameof(getCategoriesQuery));
-            }
-            this.AddCategoryCommand = addCommand;
-            this.EditCategoryCommand = editCommand;
-            this.RemoveCategoryCommand = removeCommand;
-            this.GetCategoriesQuery = getCategoriesQuery;
+            this.AddCategoryCommand = addCommand ?? throw new ArgumentNullException(nameof(addCommand));
+            this.EditCategoryCommand = editCommand ?? throw new ArgumentNullException(nameof(editCommand));
+            this.RemoveCategoryCommand = removeCommand ?? throw new ArgumentNullException(nameof(removeCommand));
+            this.GetCategoriesQuery = getCategoriesQuery ?? throw new ArgumentNullException(nameof(getCategoriesQuery));
+            this.GetCategoryByIdQuery = getCategoryByIdQuery ?? throw new ArgumentNullException(nameof(getCategoryByIdQuery));
         }
         public int AddCategory(Category categoryToAdd)
         {
@@ -89,6 +77,15 @@ namespace ToDoAppDomainLayer.Facades
         {
             GetCategoriesQueryParameter param = new();
             return GetCategoriesQuery.Execute(param);
+        }
+
+        public Category GetCategoryById(int id)
+        {
+            GetCategoryByIdQueryParameter param = new()
+            {
+                Id = id,
+            };
+            return GetCategoryByIdQuery.Execute(param);
         }
     }
 }

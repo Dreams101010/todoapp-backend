@@ -19,7 +19,7 @@ namespace ToDoAppAPI.Controllers
         {
             System.Diagnostics.Debug.WriteLine("Exception handler called");
             var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
-            var exception = context.Error; // Your exception
+            var exception = context.Error;
             switch (exception)
             {
                 case NpgsqlException:

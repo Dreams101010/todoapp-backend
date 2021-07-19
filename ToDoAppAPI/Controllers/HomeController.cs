@@ -66,6 +66,14 @@ namespace ToDoAppAPI.Controllers
             return Ok(new { Categories = categories });
         }
 
+        [HttpGet]
+        [Route("getCategory")]
+        public IActionResult GetCategory(int id)
+        {
+            var category = CategoryFacade.GetCategoryById(id);
+            return Ok(new { Category = category });
+        }
+
         [HttpPost]
         [Route("addTask")]
         public IActionResult AddTask(ToDoTaskAddModel taskToAdd)

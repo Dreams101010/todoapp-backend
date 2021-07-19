@@ -14,5 +14,6 @@ namespace ToDoAppDomainLayer.Interfaces.Facades
         public void EditCategory(Category categoryToEdit);
         public void RemoveCategoryById(int categoryId);
         public IEnumerable<Category> GetCategories();
+        public Category GetCategoryById(int id);
     }
 }
