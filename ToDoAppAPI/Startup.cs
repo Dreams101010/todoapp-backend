@@ -64,6 +64,8 @@ namespace ToDoAppAPI
                 .As(typeof(IQuery<GetTasksByCategoryIdQueryParameter, IEnumerable<ToDoTaskOutputModel>>));
             builder.RegisterType<GetCategoryByIdQuery>()
                 .As(typeof(IQuery<GetCategoryByIdQueryParameter, Category>));
+            builder.RegisterType<GetTaskByIdQuery>()
+                .As(typeof(IQuery<GetTaskByIdQueryParameter, ToDoTaskOutputModel>));
             // register command decorators
             builder.RegisterGenericDecorator(typeof(RetryCommandDecorator<,>),
                 typeof(ICommand<,>));

@@ -99,6 +99,14 @@ namespace ToDoAppAPI.Controllers
         }
 
         [HttpGet]
+        [Route("getTask")]
+        public IActionResult GetTaskById(int id)
+        {
+            var task = TaskFacade.GetTaskById(id);
+            return Ok(new { Task = task });
+        }
+
+        [HttpGet]
         [Route("getActiveTasks")]
         public IActionResult GetActiveTasks()
         {

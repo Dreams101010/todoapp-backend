@@ -12,7 +12,6 @@ using ToDoAppDomainLayer.Exceptions;
 
 namespace ToDoAppDataAccessLayer.Queries
 {
-    // TODO : implement unit tests
     public class GetCategoryByIdQuery 
         : IQuery<GetCategoryByIdQueryParameter, Category>
     {

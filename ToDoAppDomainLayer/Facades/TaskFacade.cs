@@ -25,6 +25,7 @@ namespace ToDoAppDomainLayer.Facades
             IEnumerable<ToDoTaskOutputModel>>;
     using GetCompleteTasksByCategoryIdQuery = IQuery<GetCompleteTasksByCategoryIdQueryParameter,
             IEnumerable<ToDoTaskOutputModel>>;
+    using GetTaskByIdQuery = IQuery<GetTaskByIdQueryParameter, ToDoTaskOutputModel>;
     public class TaskFacade : ITaskFacade
     {
         private readonly AddTaskCommand AddTaskCommand = null;
@@ -35,6 +36,7 @@ namespace ToDoAppDomainLayer.Facades
         private readonly GetActiveTasksByCategoryIdQuery GetActiveTasksByCategoryIdQuery = null;
         private readonly GetCompleteTasksQuery GetCompleteTasksQuery = null;
         private readonly GetCompleteTasksByCategoryIdQuery GetCompleteTasksByCategoryIdQuery = null;
+        private readonly GetTaskByIdQuery GetTaskByIdQuery = null;
 
         public TaskFacade(
             AddTaskCommand addTaskCommand,
@@ -44,55 +46,27 @@ namespace ToDoAppDomainLayer.Facades
             GetActiveTasksQuery getActiveTasksQuery,
             GetActiveTasksByCategoryIdQuery getActiveTasksByCategoryIdQuery,
             GetCompleteTasksQuery getCompleteTasksQuery,
-            GetCompleteTasksByCategoryIdQuery GetCompleteTasksByCategoryIdQuery)
+            GetCompleteTasksByCategoryIdQuery getCompleteTasksByCategoryIdQuery,
+            GetTaskByIdQuery getTaskByIdQuery)
         {
-            if (addTaskCommand is null)
-            {
-                throw new ArgumentNullException(nameof(addTaskCommand));
-            }
-
-            if (editTaskCommand is null)
-            {
-                throw new ArgumentNullException(nameof(editTaskCommand));
-            }
-
-            if (removeTaskCommand is null)
-            {
-                throw new ArgumentNullException(nameof(removeTaskCommand));
-            }
-
-            if (getTasksByCategoryIdQuery is null)
-            {
-                throw new ArgumentNullException(nameof(getTasksByCategoryIdQuery));
-            }
-
-            if (getActiveTasksQuery is null)
-            {
-                throw new ArgumentNullException(nameof(getActiveTasksQuery));
-            }
-
-            if (getActiveTasksByCategoryIdQuery is null)
-            {
-                throw new ArgumentNullException(nameof(getActiveTasksByCategoryIdQuery));
-            }
-
-            if (getCompleteTasksQuery is null)
-            {
-                throw new ArgumentNullException(nameof(getCompleteTasksQuery));
-            }
-
-            if (GetCompleteTasksByCategoryIdQuery is null)
-            {
-                throw new ArgumentNullException(nameof(GetCompleteTasksByCategoryIdQuery));
-            }
-            this.AddTaskCommand = addTaskCommand;
-            this.EditTaskCommand = editTaskCommand;
-            this.RemoveTaskCommand = removeTaskCommand;
-            this.GetTasksByCategoryIdQuery = getTasksByCategoryIdQuery;
-            this.GetActiveTasksQuery = getActiveTasksQuery;
-            this.GetActiveTasksByCategoryIdQuery = getActiveTasksByCategoryIdQuery;
-            this.GetCompleteTasksQuery = getCompleteTasksQuery;
-            this.GetCompleteTasksByCategoryIdQuery = GetCompleteTasksByCategoryIdQuery;
+            this.AddTaskCommand = addTaskCommand 
+                ?? throw new ArgumentNullException(nameof(addTaskCommand));
+            this.EditTaskCommand = editTaskCommand 
+                ?? throw new ArgumentNullException(nameof(editTaskCommand));
+            this.RemoveTaskCommand = removeTaskCommand 
+                ?? throw new ArgumentNullException(nameof(removeTaskCommand));
+            this.GetTasksByCategoryIdQuery = getTasksByCategoryIdQuery 
+                ?? throw new ArgumentNullException(nameof(getTasksByCategoryIdQuery));
+            this.GetActiveTasksQuery = getActiveTasksQuery 
+                ?? throw new ArgumentNullException(nameof(getActiveTasksQuery));
+            this.GetActiveTasksByCategoryIdQuery = getActiveTasksByCategoryIdQuery 
+                ?? throw new ArgumentNullException(nameof(getActiveTasksByCategoryIdQuery));
+            this.GetCompleteTasksQuery = getCompleteTasksQuery 
+                ?? throw new ArgumentNullException(nameof(getCompleteTasksQuery));
+            this.GetCompleteTasksByCategoryIdQuery = getCompleteTasksByCategoryIdQuery 
+                ?? throw new ArgumentNullException(nameof(getCompleteTasksByCategoryIdQuery));
+            this.GetTaskByIdQuery = getTaskByIdQuery 
+                ?? throw new ArgumentNullException(nameof(getTaskByIdQuery));
         }
 
         public int AddTask(ToDoTask taskToAdd)
@@ -165,6 +139,15 @@ namespace ToDoAppDomainLayer.Facades
                 CategoryId = categoryId,
             };
             return GetCompleteTasksByCategoryIdQuery.Execute(param);
+        }
+
+        public ToDoTaskOutputModel GetTaskById(int id)
+        {
+            GetTaskByIdQueryParameter param = new()
+            {
+                Id = id,
+            };
+            return GetTaskByIdQuery.Execute(param);
         }
     }
 }

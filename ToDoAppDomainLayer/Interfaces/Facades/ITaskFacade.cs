@@ -12,6 +12,7 @@ namespace ToDoAppDomainLayer.Interfaces.Facades
         public int AddTask(ToDoTask taskToAdd);
         public void EditTask(ToDoTask taskToEdit);
         public void RemoveTaskById(int taskId);
+        public ToDoTaskOutputModel GetTaskById(int id);
         public IEnumerable<ToDoTaskOutputModel> GetTasksByCategoryId(int categoryId);
         public IEnumerable<ToDoTaskOutputModel> GetActiveTasks();
         public IEnumerable<ToDoTaskOutputModel> GetActiveTasksByCategoryId(int categoryId);
