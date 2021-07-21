@@ -29,7 +29,8 @@ namespace ToDoAppDataAccessLayer.Queries
             string selectQuery = "SELECT todotask.id, todotask.title, todotask.description, todotask.createdat, " +
                 "todotask.isactive, todotask.iscomplete, todotask.categoryId, category.title AS categoryTitle, " +
                 "category.color AS categoryColor FROM todotask JOIN category ON todotask.categoryId = category.id " +
-                "WHERE iscomplete = true";
+                "WHERE iscomplete = true " +
+                "ORDER BY todotask.isactive DESC, todotask.createdat DESC";
             return Connection.Query<ToDoTaskOutputModel>(selectQuery).ToList();
         }
     }
