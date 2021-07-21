@@ -22,11 +22,16 @@ namespace ToDoAppAPI.Controllers
             var exception = context.Error;
             switch (exception)
             {
-                case NpgsqlException:
+                case NpgsqlException npgsqlException:
                     {
-                        ErrorModel model = new()
+
+                        ErrorModel model = new ErrorModel()
                         {
-                            Message = "A database error has occured",
+                            Message = npgsqlException.SqlState switch
+                            {
+                                "23503" => "Error: Foreign key violation",
+                                _ => "A database error has occured"
+                            }
                         };
                         return StatusCode(500, model);
                     }
