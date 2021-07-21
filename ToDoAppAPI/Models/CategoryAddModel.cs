@@ -10,7 +10,7 @@ namespace ToDoAppAPI.Models
     public class CategoryAddModel
     {
         [Required(ErrorMessage = "The title of category is required")]
-        [MaxLength(300, ErrorMessage = "Length of title cannot exceed 300 characters")]
+        [MaxLength(100, ErrorMessage = "Length of title cannot exceed 100 characters")]
         [MinLength(1, ErrorMessage = "Title cannot be empty")]
         public string Title { get; set; }
         [Required(ErrorMessage = "The color string of category is required")]
